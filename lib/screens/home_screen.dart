@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:lab_mis/screens/calendar_screen.dart';
 import 'package:lab_mis/screens/signin_screen.dart';
 
 import '../model/termin.dart';
@@ -19,19 +21,16 @@ class _HomeScreenState extends State<HomeScreen>{
   final List<Termin> _termini = [
     Termin(
         id: "1",
-        ime: "Mobile information systems",
-        datum: "15.01.2023",
-        vreme: "10:00h"),
+        name: "MIS Mobile information systems",
+        date:  DateTime.parse("2022-12-29 15:00:00")),
     Termin(
         id: "2",
-        ime: "Management information systems",
-        datum: "25.01.2023",
-        vreme: "15:30h"),
+        name: "OOP Object oriented programming",
+        date: DateTime.parse("2022-12-13 15:00:00"),),
     Termin(
         id: "3",
-        ime: "Design of human-computer interaction",
-        datum: "16.01.2023",
-        vreme: "8:00h")
+        name: "HCI Design of human-computer interaction",
+        date: DateTime.parse("2022-12-10 15:00:00"),)
   ];
 
   void _showModal(BuildContext ctx){
@@ -59,6 +58,15 @@ class _HomeScreenState extends State<HomeScreen>{
     });
   }
 
+  String _modifyDate(DateTime date){
+
+    String dateString = DateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+    List<String> dateParts = dateString.split(" ");
+    String modifiedTime = dateParts[1].substring(0,5);
+
+    return dateParts[0] + ' | ' + modifiedTime + 'h';
+  }
+
   Future _signOut() async{
     try {
       await FirebaseAuth.instance.signOut().then((value) {
@@ -71,7 +79,6 @@ class _HomeScreenState extends State<HomeScreen>{
     }
   }
 
-
   PreferredSizeWidget _createAppBar(BuildContext context){
     //final user = FirebaseAuth.instance.currentUser?.email;
     return AppBar(
@@ -79,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen>{
         actions:[
           IconButton(
             icon: Icon(Icons.add_box_outlined),
-            onPressed: () => _showModal(context)),
+            onPressed: () => _showModal(context),),
           ElevatedButton(
             child: Text("Sign out"),
             onPressed: _signOut,
@@ -89,10 +96,16 @@ class _HomeScreenState extends State<HomeScreen>{
   }
 
   Widget _createBody(BuildContext context){
-    return Center(
+    return Container(
+      child: SingleChildScrollView(
+        child: Column(
+        children: <Widget>[
+          Center(
           child: _termini.isEmpty
               ? Text("No exams scheduled")
               : ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
                   itemCount: _termini.length,
                   itemBuilder: (ctx, index) {
                     return Card(
@@ -101,11 +114,11 @@ class _HomeScreenState extends State<HomeScreen>{
                       child: ListTile(
                         tileColor: Colors.green[100],
                         title: Text(
-                          _termini[index].ime,
+                          _termini[index].name,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(
-                          _termini[index].datum + " | " + _termini[index].vreme,
+                          _modifyDate(_termini[index].date),
                           style: TextStyle(color: Colors.grey),
                         ),
                         trailing: IconButton(
@@ -115,7 +128,19 @@ class _HomeScreenState extends State<HomeScreen>{
                     );
                   },
                 ),
-              );
+              ),
+            ElevatedButton.icon(
+                icon: Icon(Icons.calendar_month_outlined, size: 30,),
+                label: Text("Calendar", style: TextStyle(fontSize: 20),),
+                onPressed: (){
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) => CalendarScreen(_termini)));
+                },
+                ),
+        ],
+      ),
+      )
+    );
   }
   @override
   Widget build(BuildContext context) {

@@ -1,13 +1,13 @@
 class Termin {
   final String id;
-  final String ime;
-  final String datum;
-  final String vreme;
+  final String name;
+  final DateTime date;
+  // final String vreme;
 
   Termin({
     required this.id,
-    required this.ime,
-    required this.datum,
-    required this.vreme
+    required this.name,
+    required this.date,
+    // required this.vreme
   });
 }

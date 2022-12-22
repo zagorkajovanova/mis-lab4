@@ -16,18 +16,23 @@ class _NewElementState extends State<createNewElement>{
 
   final _imePredmetController = TextEditingController();
   final _datumController = TextEditingController();
-  final _vremeController = TextEditingController();
 
   void _submitData(){
-    if(_imePredmetController.text.isEmpty || _datumController.text.isEmpty || _vremeController.text.isEmpty){
+    if(_imePredmetController.text.isEmpty || _datumController.text.isEmpty){
       return ;
     }
+    if(_datumController.text.length < 16){
+      print("Please enter date in the right format!");
+      return;
+    }
+
+    final String stringDate = _datumController.text + ':00';
+    DateTime date = DateTime.parse(stringDate);
 
     final newTermin = Termin(
         id: nanoid(5), 
-        ime: _imePredmetController.text, 
-        datum: _datumController.text, 
-        vreme: _vremeController.text,
+        name: _imePredmetController.text, 
+        date: date, 
       );
       widget.addTermin(newTermin);
       Navigator.of(context).pop();
@@ -45,13 +50,8 @@ class _NewElementState extends State<createNewElement>{
             onSubmitted: (_) => _submitData(),
           ),
           TextField(
-            decoration: InputDecoration(labelText: "Date"),
+            decoration: InputDecoration(labelText: "Date (ex. 2022-01-01 15:00)"),
             controller: _datumController,
-            onSubmitted: (_) => _submitData(),
-          ),
-          TextField(
-            decoration: InputDecoration(labelText: "Time"),
-            controller: _vremeController,
             onSubmitted: (_) => _submitData(),
           ),
         ],
