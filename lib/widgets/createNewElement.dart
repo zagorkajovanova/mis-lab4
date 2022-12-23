@@ -21,7 +21,11 @@ class _NewElementState extends State<createNewElement>{
     if(_imePredmetController.text.isEmpty || _datumController.text.isEmpty){
       return ;
     }
-    if(_datumController.text.length < 16){
+
+    int check1 = '-'.allMatches(_datumController.text).length; //should be 2
+    int check2 = ':'.allMatches(_datumController.text).length; //should be 1
+
+    if(_datumController.text.length < 16 || check1 != 2 || check2 != 1){
       print("Please enter date in the right format!");
       return;
     }

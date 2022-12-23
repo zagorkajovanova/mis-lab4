@@ -1,17 +1,12 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../model/termin.dart';
 
-// class CalendarScreen extends StatefulWidget{
-//   static const String idScreen = "calendarScreen";
-
-//   CalendarScreen(List<Termin> termini);
-
-//   @override
-//   State<StatefulWidget> createState() => _CalendarScreenState();
-// }
 class CalendarScreen extends StatelessWidget{
   static const String idScreen = "calendarScreen";
   final List<Termin> _termini;
@@ -33,9 +28,9 @@ class CalendarScreen extends StatelessWidget{
             appointmentDisplayMode: MonthAppointmentDisplayMode.appointment
           ),
           firstDayOfWeek: 1,
+          showDatePickerButton: true,
         ),
       )
-    
     );
   }
 }
@@ -65,4 +60,5 @@ class MeetingDataSource extends CalendarDataSource {
   }
 
 }
+
 
