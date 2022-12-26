@@ -3,11 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:lab_mis/screens/signin_screen.dart';
 import 'package:lab_mis/screens/register_screen.dart';
-
 import 'screens/home_screen.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-
 
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();

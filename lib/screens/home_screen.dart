@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lab_mis/screens/calendar_screen.dart';
 import 'package:lab_mis/screens/signin_screen.dart';
+import 'package:lab_mis/services/notification_service.dart';
 
 import '../model/termin.dart';
 import '../widgets/createNewElement.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
 
 class HomeScreen extends StatefulWidget{
   static const String idScreen = "mainScreen";
@@ -18,6 +22,16 @@ class HomeScreen extends StatefulWidget{
 }
 
 class _HomeScreenState extends State<HomeScreen>{
+
+  late final NotificationService service;
+
+  @override
+  void initState(){
+    service = NotificationService();
+    service.initialize();
+    super.initState();
+  }
+
   final List<Termin> _termini = [
     Termin(
         id: "1",
@@ -30,7 +44,11 @@ class _HomeScreenState extends State<HomeScreen>{
     Termin(
         id: "3",
         name: "HCI Design of human-computer interaction",
-        date: DateTime.parse("2022-12-10 15:00:00"),)
+        date: DateTime.parse("2023-03-20 15:00:00"),),
+    Termin(
+        id: "4",
+        name: "DS Data Science",
+        date: DateTime.parse("2023-03-03 13:30:00"),)
   ];
 
   void _showModal(BuildContext ctx){
@@ -136,7 +154,22 @@ class _HomeScreenState extends State<HomeScreen>{
                   Navigator.push(context, 
                   MaterialPageRoute(builder: (context) => CalendarScreen(_termini)));
                 },
-                ),
+              ),
+            ElevatedButton.icon(
+                icon: Icon(Icons.notifications, size: 30,),
+                label: Text("Show Local Notification", style: TextStyle(fontSize: 20),),
+                onPressed: () async{
+                  await service.showNotification(id: 0, title: 'You have upcoming exams', body: 'Check your calendar');
+                },
+            ),
+            ElevatedButton.icon(
+                icon: Icon(Icons.notifications_paused_sharp, size: 30,),
+                label: Text("Schedule Notification", style: TextStyle(fontSize: 20),),
+                onPressed: () async{
+                  //notification appears after 4 seconds
+                  await service.showScheduledNotification(id: 0, title: 'You have upcoming exams', body: 'Check your calendar', seconds: 4);
+                },
+              ),
         ],
       ),
       )

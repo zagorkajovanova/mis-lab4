@@ -40,6 +40,10 @@ dependencies:
   firebase_auth: ^4.2.1
   syncfusion_flutter_calendar: ^20.4.38
   intl: ^0.18.0
+  flutter_local_notifications: ^13.0.0
+  timezone: ^0.9.0
+  rxdart: ^0.27.7
+
 
 dev_dependencies:
   flutter_test:

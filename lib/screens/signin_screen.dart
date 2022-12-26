@@ -19,7 +19,7 @@ class _SignInScreenState extends State<SignInScreen>{
   bool loginFail = false;
   bool passwordError = false;
   bool emailError = false;
-  String loginErrorMessage = "";
+  String loginErrorMessage = "test";
 
   Future _signIn() async{
     try {
